@@ -64,3 +64,10 @@ ORDER BY UserScore DESC
 INTO OUTFILE 'C:\\ProgramData\\MySQL\\MySQL Server 8.0\\Uploads\\Developer_score.csv'
 FIELDS TERMINATED BY ','
 LINES TERMINATED BY '\n';
+
+SELECT Rating AS ESRB, AVG(User_Score) AS UserScore FROM games
+GROUP BY Rating
+ORDER BY UserScore
+INTO OUTFILE 'C:\\ProgramData\\MySQL\\MySQL Server 8.0\\Uploads\\rating_score_overall.csv'
+FIELDS TERMINATED BY ','
+LINES TERMINATED BY '\n';
