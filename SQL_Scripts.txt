@@ -1,0 +1,66 @@
+CREATE TABLE Users
+AS (SELECT Game, Platform, User_Score, User_Count FROM games);
+
+CREATE TABLE Critics
+AS (SELECT Game, Platform, Critic_Score, Critic_Count FROM games);
+
+CREATE TABLE Sales
+AS (SELECT Game, Platform, Global_Sales, NA_Sales, EU_Sales, JP_Sales, Other_Sales FROM games);
+
+
+SELECT Year_of_Release AS Year, COUNT(*) AS Games FROM games
+WHERE Year_of_Release > 0
+GROUP BY Year_of_Release
+ORDER BY Year_of_Release
+INTO OUTFILE 'C:\\ProgramData\\MySQL\\MySQL Server 8.0\\Uploads\\games_by_year.csv'
+FIELDS TERMINATED BY ','
+LINES TERMINATED BY '\n';
+
+SELECT Year_of_Release AS YearNum, AVG(User_Score) AS UserScore, AVG(Critic_Score)/10 AS CriticScore FROM games
+WHERE Year_of_Release > 0
+GROUP BY Year_of_Release
+ORDER BY Year_of_Release
+INTO OUTFILE 'C:\\ProgramData\\MySQL\\MySQL Server 8.0\\Uploads\\avg_score_by_year.csv'
+FIELDS TERMINATED BY ','
+LINES TERMINATED BY '\n';
+
+SELECT Year_of_Release AS YearNum, MAX(User_Score) AS UserScore, MAX(Critic_Score)/10 AS CriticScore FROM games
+WHERE Year_of_Release > 0
+GROUP BY Year_of_Release
+ORDER BY Year_of_Release
+INTO OUTFILE 'C:\\ProgramData\\MySQL\\MySQL Server 8.0\\Uploads\\max_score_by_year.csv'
+FIELDS TERMINATED BY ','
+LINES TERMINATED BY '\n';
+
+SELECT Year_of_Release AS YearNum, MIN(User_Score) AS UserScore, MIN(Critic_Score)/10 AS CriticScore FROM games
+WHERE Year_of_Release > 0
+GROUP BY Year_of_Release
+ORDER BY Year_of_Release
+INTO OUTFILE 'C:\\ProgramData\\MySQL\\MySQL Server 8.0\\Uploads\\min_score_by_year.csv'
+FIELDS TERMINATED BY ','
+LINES TERMINATED BY '\n';
+
+SELECT Genre, AVG(User_Score) AS UserScore, AVG(Critic_Score)/10 AS CriticScore FROM games
+WHERE Year_of_Release > 0
+GROUP BY Genre, Year_of_Release
+ORDER BY Genre
+INTO OUTFILE 'C:\\ProgramData\\MySQL\\MySQL Server 8.0\\Uploads\\genre_score_by_year.csv'
+FIELDS TERMINATED BY ','
+LINES TERMINATED BY '\n';
+
+SELECT Genre, AVG(User_Score) AS UserScore, AVG(Critic_Score)/10 AS CriticScore FROM games
+WHERE Year_of_Release > 0
+GROUP BY Genre
+ORDER BY UserScore DESC
+INTO OUTFILE 'C:\\ProgramData\\MySQL\\MySQL Server 8.0\\Uploads\\genre_score_overall.csv'
+FIELDS TERMINATED BY ','
+LINES TERMINATED BY '\n';
+
+SELECT Developer, AVG(User_Score) AS UserScore, AVG(Critic_Score)/10 AS CriticScore FROM games
+WHERE User_Score > 0
+  AND Critic_Score > 0
+GROUP BY Developer
+ORDER BY UserScore DESC
+INTO OUTFILE 'C:\\ProgramData\\MySQL\\MySQL Server 8.0\\Uploads\\Developer_score.csv'
+FIELDS TERMINATED BY ','
+LINES TERMINATED BY '\n';
